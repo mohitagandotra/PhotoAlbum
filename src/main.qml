@@ -1,71 +1,50 @@
-import QtQuick 2.13
-import QtQuick.Window 2.13
-import sumup.com 1.0
+import QtQuick 2.12
+import QtQuick.Window 2.12
+
 
 Window {
     visible: true
     width: 640
     height: 480
-    title: qsTr("Hello World")
+    color: "#707070"
 
-    Text {
-        id: users
-        x: 8
-        y: 8
-        font.pixelSize: 12
-        text: qsTr("Users: ") + Manager.usersCount
-    }
-
-    Text {
-        id: albums
-        x: 8
-        anchors.top: users.bottom
-        font.pixelSize: 12
-        text: qsTr("Albums: ") + Manager.albumsCount
-    }
-
-    Text {
-        id: photos
-        x: 8
-        anchors.top: albums.bottom
-        font.pixelSize: 12
-        text: qsTr("Photos: ") + Manager.photosCount
-    }
-
-    ListView {
-        id: albumView
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.top: photos.bottom
-        delegate: Rectangle {
-            width: parent.width
-            height: 20
-            color: "lightblue"
-            Text {
-                anchors.centerIn: parent
-                text: entityObject.title
-            }
+    Image {
+        id: homeButton
+        scale: homeMouse.pressed ? 0.9 : (homeMouse.containsMouse ? 1.2 : 1.0)
+        Behavior on scale {
+            NumberAnimation { duration: 100 }
         }
-        spacing: 1
-    }
 
-    Text {
-        id: loading
-        anchors.centerIn: parent
-        text: qsTr("Loading ...")
-    }
-
-    Connections {
-        target: DataBank
-        function onDataPoolReady() {
-            loading.visible = false
-            albumView.model = DataBank.entityProxyModel(EntityDataBank.Albums);
+        anchors {
+            right: parent.right
+            rightMargin: 30
+            top: parent.top
+            topMargin: 8
+        }
+        source: "qrc:/images/home.svg"
+        width: 24
+        height: 24
+        MouseArea {
+            id: homeMouse
+            hoverEnabled: true
+            anchors.fill: parent
+            onClicked: mainContainer.activateHome();
         }
     }
 
-    Timer {
-        interval: 8000; running: true; repeat: true
-        onTriggered: Manager.filterAlbumsByUser(5);
+    ViewContainer {
+        id: mainContainer
+        anchors {
+            //fill:parent
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            top: homeButton.bottom
+            topMargin: 8
+            bottomMargin: 20
+            leftMargin: 20
+            rightMargin: 20
+        }
     }
+
 }
