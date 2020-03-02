@@ -13,7 +13,7 @@ class Photo_C : public Entity_C
     Q_PROPERTY(QUrl thumbnailUrl READ thumbnailUrl CONSTANT)
 
 public:
-    Photo_C(unsigned long id, unsigned long albumId, const QString& title,
+    Photo_C(const SUCore::EntityDataBank_C& dataBank, unsigned long id, unsigned long albumId, const QString& title,
             const QUrl& imageUrl, const QUrl& thumbnailUrl, QObject* parent = nullptr);
 
     bool isValid() const override;

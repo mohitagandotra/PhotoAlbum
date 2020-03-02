@@ -10,7 +10,7 @@ namespace SUCore {
 class JsonPhotosParser_C : public DataSource_I
 {
 public:
-    JsonPhotosParser_C(SUData::EntityDataPool_C& dataPool);
+    JsonPhotosParser_C(const EntityDataBank_C &dataBank);
     ~JsonPhotosParser_C() override = default;
 
 public:

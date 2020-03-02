@@ -4,9 +4,9 @@ namespace SUData {
 
 
 
-Photo_C::Photo_C(unsigned long id, unsigned long albumId, const QString &title,
+Photo_C::Photo_C(const SUCore::EntityDataBank_C& dataBank, unsigned long id, unsigned long albumId, const QString &title,
                  const QUrl &imageUrl, const QUrl &thumbnailUrl, QObject *parent) :
-    Entity_C(parent),
+    Entity_C(dataBank, parent),
     m_id(id),
     m_albumId(albumId),
     m_title(title),

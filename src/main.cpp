@@ -20,6 +20,7 @@ int main(int argc, char **argv)
 
     qmlRegisterUncreatableType<EntityDataBank_C>("sumup.com", 1, 0, "EntityDataBank", "Not creatable as it is an enum type");
     qRegisterMetaType<DataSource_I*>("DataSource_I*");
+    qRegisterMetaType<Entity_C*>("Entity_C*");
     qRegisterMetaType<EntityDataModel_C*>("EntityDataModel_C*");
     qRegisterMetaType<QSortFilterProxyModel*>("QSortFilterProxyModel*");
 

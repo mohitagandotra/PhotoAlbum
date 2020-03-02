@@ -12,7 +12,7 @@ namespace SUCore {
 class JsonUserParser_C : public DataSource_I
 {
 public:
-    JsonUserParser_C(SUData::EntityDataPool_C& dataPool);
+    JsonUserParser_C(const EntityDataBank_C &dataBank);
     ~JsonUserParser_C() override = default;
 
 public:

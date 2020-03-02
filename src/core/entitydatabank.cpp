@@ -50,9 +50,9 @@ void EntityDataBank_C::populate()
     });
 
     // Create data sources.
-    m_dataSources.push_back(make_unique<JsonUserParser_C>(*entityDataPool(EntityType::Users)));
-    m_dataSources.push_back(make_unique<JsonAlbumsParser_C>(*entityDataPool(EntityType::Albums)));
-    m_dataSources.push_back(make_unique<JsonPhotosParser_C>(*entityDataPool(EntityType::Photos)));
+    m_dataSources.push_back(make_unique<JsonUserParser_C>(*this));
+    m_dataSources.push_back(make_unique<JsonAlbumsParser_C>(*this));
+    m_dataSources.push_back(make_unique<JsonPhotosParser_C>(*this));
 
     // Begin fetch
     beginFetch();

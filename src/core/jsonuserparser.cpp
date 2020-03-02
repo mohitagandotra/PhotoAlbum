@@ -24,8 +24,8 @@ using namespace SUData;
 
 namespace SUCore {
 
-JsonUserParser_C::JsonUserParser_C(EntityDataPool_C& dataPool) :
-    DataSource_I(dataPool),
+JsonUserParser_C::JsonUserParser_C(const EntityDataBank_C &dataBank) :
+    DataSource_I(dataBank),
     m_url("https://jsonplaceholder.typicode.com/users")
 {
 
@@ -49,15 +49,16 @@ bool JsonUserParser_C::parse(const QByteArray &rawdata)
 
 void JsonUserParser_C::addUser(const QJsonObject &obj)
 {
-    std::unique_ptr<User_C> user = std::make_unique<User_C>(obj.value(IdTag).toInt(0),
-                           obj.value(NameTag).toString(),
-                           obj.value(UserNameTag).toString(),
-                           obj.value(EmailTag).toString());
+    std::unique_ptr<User_C> user = std::make_unique<User_C>(m_dataBank,
+                                                            obj.value(IdTag).toInt(0),
+                                                            obj.value(NameTag).toString(),
+                                                            obj.value(UserNameTag).toString(),
+                                                            obj.value(EmailTag).toString());
     if (!user->isValid()) {
         qCDebug(errorLog) << "Invalid user" << obj;
         return;
     }
-    addEntity(std::move(user));
+    addEntity(EntityDataBank_C::EntityType::Users, std::move(user));
 }
 
 }

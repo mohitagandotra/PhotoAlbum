@@ -25,8 +25,8 @@ using namespace SUData;
 
 namespace SUCore {
 
-JsonPhotosParser_C::JsonPhotosParser_C(EntityDataPool_C& dataPool) :
-    DataSource_I(dataPool),
+JsonPhotosParser_C::JsonPhotosParser_C(const EntityDataBank_C &dataBank) :
+    DataSource_I(dataBank),
     m_url("https://jsonplaceholder.typicode.com/photos")
 {
 
@@ -50,7 +50,7 @@ bool JsonPhotosParser_C::parse(const QByteArray &rawdata)
 
 void JsonPhotosParser_C::addPhoto(const QJsonObject &obj)
 {
-    std::unique_ptr<Entity_C> photo(new Photo_C(obj.value(IdTag).toInt(0),
+    std::unique_ptr<Entity_C> photo(new Photo_C(m_dataBank, obj.value(IdTag).toInt(0),
                                                 obj.value(AlbumIdTag).toInt(0),
                                                 obj.value(TitleTag).toString(),
                                                 obj.value(ImageUrlTag).toString(),
@@ -59,7 +59,7 @@ void JsonPhotosParser_C::addPhoto(const QJsonObject &obj)
         qCDebug(errorLog) << "Invalid album" << obj;
         return;
     }
-    addEntity(std::move(photo));
+    addEntity(EntityDataBank_C::EntityType::Photos, std::move(photo));
 }
 
 }

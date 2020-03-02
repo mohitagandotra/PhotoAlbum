@@ -23,8 +23,8 @@ using namespace SUData;
 
 namespace SUCore {
 
-JsonAlbumsParser_C::JsonAlbumsParser_C(EntityDataPool_C& dataPool) :
-    DataSource_I(dataPool),
+JsonAlbumsParser_C::JsonAlbumsParser_C(const EntityDataBank_C &dataBank) :
+    DataSource_I(dataBank),
     m_url("https://jsonplaceholder.typicode.com/albums")
 {
 
@@ -48,14 +48,14 @@ bool JsonAlbumsParser_C::parse(const QByteArray &rawdata)
 
 void JsonAlbumsParser_C::addAlbum(const QJsonObject &obj)
 {
-    std::unique_ptr<Entity_C> album(new Album_C(obj.value(IdTag).toInt(0),
+    std::unique_ptr<Entity_C> album(new Album_C(m_dataBank, obj.value(IdTag).toInt(0),
                                                 obj.value(UserIdTag).toInt(0),
                                                 obj.value(TitleTag).toString()));
     if (!album->isValid()) {
         qCDebug(errorLog) << "Invalid album" << obj;
         return;
     }
-    addEntity(std::move(album));
+    addEntity(EntityDataBank_C::EntityType::Albums, std::move(album));
 }
 
 }

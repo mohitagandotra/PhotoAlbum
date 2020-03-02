@@ -19,7 +19,7 @@ public:
     Entity_C* entityAtIndex(size_t index) const;
     size_t count() const { return m_entities.size(); }
 
-    void forEachEntity(std::function<void(const Entity_C*)> callback) const;
+    void forEachEntity(std::function<bool(const Entity_C*)> callback) const;
 
 private:
    std::vector<std::unique_ptr<Entity_C>> m_entities;

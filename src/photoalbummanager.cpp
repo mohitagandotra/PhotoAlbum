@@ -57,6 +57,7 @@ void PhotoAlbumManager_C::filterAlbumsByUser(ulong userId) const
         auto album = static_cast<const Album_C*>(e);
         if (album->userId() == userId)
             addIdToRegEx(album->id());
+        return true;
     });
 
     if (!regEx.isEmpty()) {
@@ -82,6 +83,7 @@ void PhotoAlbumManager_C::filterPhotosByAlbum(ulong albumId) const
         auto photo = static_cast<const Photo_C*>(e);
         if (photo->albumId() == albumId)
             addIdToRegEx(photo->id());
+        return true;
     });
 
     if (!regEx.isEmpty()) {

@@ -12,7 +12,7 @@ class User_C : public Entity_C
     Q_PROPERTY(QString email READ email CONSTANT)
 
 public:
-    User_C(unsigned long id, QString name, QString userName, QString email);
+    User_C(const SUCore::EntityDataBank_C& dataBank, unsigned long id, QString name, QString userName, QString email, QObject* parent = nullptr);
 
     bool isValid() const override;
     unsigned long id() const override { return m_id; }

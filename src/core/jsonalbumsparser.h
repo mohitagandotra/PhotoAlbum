@@ -7,10 +7,11 @@
 class QJsonObject;
 
 namespace SUCore {
+class EntityDataBank_C;
 class JsonAlbumsParser_C : public DataSource_I
 {
 public:
-    JsonAlbumsParser_C(SUData::EntityDataPool_C& dataPool);
+    JsonAlbumsParser_C(const EntityDataBank_C &dataBank);
     ~JsonAlbumsParser_C() override = default;
 
 public:

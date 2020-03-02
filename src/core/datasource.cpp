@@ -5,15 +5,17 @@
 
 namespace SUCore {
 
-DataSource_I::DataSource_I(SUData::EntityDataPool_C &dataPool) :
-    m_userDataPool(dataPool)
+DataSource_I::DataSource_I(const EntityDataBank_C &m_dataBank) :
+    m_dataBank(m_dataBank)
 {
 
 }
 
-void DataSource_I::addEntity(std::unique_ptr<SUData::Entity_C> entity)
+void DataSource_I::addEntity(EntityDataBank_C::EntityType type, std::unique_ptr<SUData::Entity_C> entity)
 {
-    m_userDataPool.addEntity(std::move(entity));
+    SUData::EntityDataPool_C* pool = m_dataBank.entityDataPool(type);
+    Q_ASSERT(pool);
+    pool->addEntity(std::move(entity));
 }
 
 }

@@ -26,11 +26,13 @@ Entity_C *EntityDataPool_C::entityAtIndex(size_t index) const
     return m_entities.at(index).get();
 }
 
-void EntityDataPool_C::forEachEntity(std::function<void (const Entity_C *)> callback) const
+void EntityDataPool_C::forEachEntity(std::function<bool (const Entity_C *)> callback) const
 {
     if (!callback)
         return;
-    for (const auto& e : m_entities)
-        callback(e.get());
+    for (const auto& e : m_entities) {
+        if (!callback(e.get()))
+            break;
+    }
 }
 }
