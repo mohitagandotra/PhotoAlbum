@@ -39,3 +39,5 @@ HEADERS += \
     data/photo.h \
     data/user.h \
     photoalbummanager.h
+
+QML_IMPORT_PATH = ./
