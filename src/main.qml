@@ -6,7 +6,18 @@ Window {
     visible: true
     width: 640
     height: 480
-    color: "#707070"
+
+    QtObject {
+        id: palette
+        property color grooveColor: "#cccccc"
+        property color backgroundColor: "#8c8c8c"
+        property color altBackgroundColor: "#f2f2f2"
+        property color itemColor: "#a6a6a6"
+        property color itemBorderColor: "#404040"
+        property color activeItemColor: "#e6f9ff"
+    }
+
+    color: palette.backgroundColor
 
     Image {
         id: homeButton

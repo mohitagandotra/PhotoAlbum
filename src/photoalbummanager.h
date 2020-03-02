@@ -24,7 +24,7 @@ public:
     int albumsCount() const;
     int photosCount() const;
 
-    Q_INVOKABLE void filterAlbumsByUser(ulong userId) const;
+    Q_INVOKABLE void filterAlbumsByUser(ulong userId, bool filterPhotos = false) const;
     Q_INVOKABLE void filterPhotosByAlbum(ulong albumId) const;
 
     EntityDataBank_C* entityDataBank() { return &m_dataBank; }

@@ -3,151 +3,117 @@ import QtQuick.Controls 2.14
 import sumup.com 1.0
 
 EntityView {
+    id: entityView
 
-    property string selectedName: ""
-    property string selectedUserName: ""
-    property string selectedEmail: ""
-
-    clip:true
-
-    ListView {
-        id:usersView
-        width: 300
-        height:parent.height
-        spacing: 8
-        orientation: Qt.Vertical
-        delegate: usersDelegate
-        focus: true
-
-        onCurrentIndexChanged: {
-            var currentUser = DataBank.entityDataModel(EntityDataBank.Users).entityObject(usersView.currentIndex)
-            Manager.filterAlbumsByUser(currentUser.id)
-            selectedName = currentUser.name
-            selectedUserName = currentUser.userName
-            selectedEmail = currentUser.email
+    Groove {
+        id: photosViewBackground
+        anchors.top: parent.top
+        anchors.topMargin: 12
+        anchors.right: parent.right
+        anchors.rightMargin: 12
+        anchors.left: parent.left
+        anchors.leftMargin: 12
+        height: 200
+        PathView {
+            id: photosView
+            anchors.fill: parent
+            anchors.margins: 12
+            pathItemCount: (photosView.width / photosView.height) + 3
+            preferredHighlightBegin: 0.5
+            preferredHighlightEnd: 0.5
+            highlightRangeMode: PathView.StrictlyEnforceRange
+            delegate: PhotoDelegate {
+                property double r : PathView.imageRotation
+                scale: PathView.imageScale
+                opacity: PathView.imageOpacity
+                transform: Rotation { axis { x: 0; y: 1; z: 0 } angle: r }
+                z: PathView.imageOrder
+                height: parent.height
+                photoSource: entityObject.thumbnailUrl
+            }
+            path: Path {
+                startX: 0; startY: photosView.height/2
+                PathAttribute { name: "imageScale"; value: 0.6 }
+                PathAttribute { name: "imageOpacity"; value: 0.7 }
+                PathAttribute { name: "imageOrder"; value: 0 }
+                PathAttribute { name: "imageRotation"; value: 60 }
+                PathLine {x: photosView.width / 2; y: photosView.height/2 }
+                PathAttribute { name: "imageScale"; value: 1.0 }
+                PathAttribute { name: "imageOpacity"; value: 1 }
+                PathAttribute { name: "imageOrder"; value: 10 }
+                PathAttribute { name: "imageRotation"; value: 0 }
+                PathLine {x: photosView.width; y: photosView.height/2 }
+                PathAttribute { name: "imageRotation"; value: -60 }
+            }
         }
-
-
     }
 
+    Groove {
+        id: usersViewBackground
+        width: parent.width / 3
+        anchors.left: parent.left
+        anchors.leftMargin: 12
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 12
+        anchors.top: photosViewBackground.bottom
+        anchors.topMargin: 12
 
-
-
-    Component {
-        id: usersDelegate
-
-        Rectangle {
-            anchors.left:parent.left
-            height:100
-            width:300
-            radius:20
-            color: index === usersView.currentIndex ? "#484848" : "#A0A0A0"
-            scale: mouse.containsMouse ? 0.97 - (mouse.pressed ? 0.02: 0) : 1.0
-            Behavior on scale {
-                NumberAnimation { duration: 100 }
-            }
-            MouseArea {
-                id :mouse
-                anchors.fill: parent
-                hoverEnabled: true
-                onClicked: {
+        ListView {
+            id:usersView
+            anchors.fill: parent
+            anchors.margins: 12
+            spacing: 8
+            orientation: Qt.Vertical
+            delegate: UserDelegate {
+                width: parent.width
+                nameText: qsTr("Name: ") + entityObject.name
+                userNameText: qsTr("Login Id: ") + entityObject.userName
+                emailText: qsTr("Email Id: ") + entityObject.email
+                color: index === usersView.currentIndex ? palette.activeItemColor : palette.itemColor
+                onActivated: {
                     usersView.currentIndex = index
+                    Manager.filterAlbumsByUser(entityObject.entityId, true)
                 }
             }
-
-            Text {
-                anchors {
-                    top:parent.top
-                    topMargin: 12
-                    left:parent.left
-                    leftMargin: 10
-                }
-                height:20
-                text: '<b>Name:</b> ' + entityObject.name
-
-            }
-            Text {
-                anchors {
-                    top:parent.top
-                    topMargin: 34
-                    left:parent.left
-                    leftMargin: 10
-                }
-                height:20
-                text: '<b>UserName:</b> ' + entityObject.userName
-
-            }
-            Text {
-                anchors {
-                    top:parent.top
-                    topMargin: 56
-                    left:parent.left
-                    leftMargin: 10
-                }
-                height:20
-                text: '<b>Email:</b> '+ entityObject.email
-            }
-
+            focus: true
         }
+    }
 
+    Groove {
+        anchors.left: usersViewBackground.right
+        anchors.leftMargin: 12
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 12
+        anchors.top: photosViewBackground.bottom
+        anchors.topMargin: 12
+        anchors.right: parent.right
+        anchors.rightMargin: 12
+
+        ListView {
+            id: userAlbums
+            anchors.fill: parent
+            anchors.margins: 12
+            spacing: 8
+            orientation: Qt.Vertical
+            delegate: UserAlbumDelegate {
+                width: parent.width
+                albumNameText: entityObject.title
+                thumbnailUrl: entityObject.albumThumbnail
+                color: index === userAlbums.currentIndex ? palette.activeItemColor : palette.itemColor
+                onActivated: {
+                    userAlbums.currentIndex = index
+                    Manager.filterPhotosByAlbum(entityObject.entityId)
+                }
+            }
+        }
     }
 
     Connections {
         target: DataBank
         function onDataPoolReady() {
-            //loading.visible = false
             usersView.model = DataBank.entityDataModel(EntityDataBank.Users);
-            userDetailView.model = DataBank.entityProxyModel(EntityDataBank.Albums);
-            console.log("onDataPoolReady slot")
+            photosView.model = DataBank.entityProxyModel(EntityDataBank.Photos);
+            userAlbums.model = DataBank.entityProxyModel(EntityDataBank.Albums);
         }
     }
-
-
-    Rectangle {
-        anchors {
-            fill: parent
-            leftMargin: 310
-        }
-        color: "#A0A0A0"
-        radius:20
-
-        Component {
-            id: userDetailViewdelegate
-            Column {
-                id: wrapper
-                //anchors.horizontalCenter: parent.horizontalCenter
-                clip:true
-
-                Image {
-                    width: 50; height: 50
-                    //anchors.horizontalCenter: parent.horizontalCenter
-                    source: entityObject.albumThumbnail
-                }
-                Text {
-                    id: nameText
-                    text: entityObject.title
-                    width: 20
-                    font.pointSize: 16
-                    elide: Text.ElideRight
-                    wrapMode: Text.WordWrap
-                }
-            }
-
-        }
-
-        GridView {
-            id:userDetailView
-            //width: 300; height: 200
-            anchors.fill: parent
-            cellWidth: 80; cellHeight: 80
-            delegate: userDetailViewdelegate
-
-
-        }
-
-
-    }
-
-
-
 }

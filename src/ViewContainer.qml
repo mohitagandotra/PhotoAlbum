@@ -1,7 +1,10 @@
 import QtQuick 2.0
 
-Item {
+Groove {
     property EntityView activeView : home
+
+    color: palette.altBackgroundColor
+    radius: 12
 
     function activateHome() {
         activeView = home

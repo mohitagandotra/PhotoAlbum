@@ -1,6 +1,8 @@
 #pragma once
 #include "core/abstractdatafetcher.h"
 
+#include "data/entitydatamodel.h"
+
 #include <QObject>
 
 #include <vector>
@@ -12,7 +14,6 @@ class QSortFilterProxyModel;
 
 namespace SUData {
 class EntityDataPool_C;
-class EntityDataModel_C;
 }
 
 using SafeModelPtr = std::unique_ptr<SUData::EntityDataModel_C>;

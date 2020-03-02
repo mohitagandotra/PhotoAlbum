@@ -9,5 +9,9 @@
         <file>UsersView.qml</file>
         <file>ViewContainer.qml</file>
         <file>images/home.svg</file>
+        <file>UserAlbumDelegate.qml</file>
+        <file>PhotoDelegate.qml</file>
+        <file>UserDelegate.qml</file>
+        <file>Groove.qml</file>
     </qresource>
 </RCC>

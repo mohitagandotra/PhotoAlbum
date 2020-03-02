@@ -40,7 +40,7 @@ int PhotoAlbumManager_C::photosCount() const
     return entityCount(EntityDataBank_C::EntityType::Photos);
 }
 
-void PhotoAlbumManager_C::filterAlbumsByUser(ulong userId) const
+void PhotoAlbumManager_C::filterAlbumsByUser(ulong userId, bool filterPhotos) const
 {
     EntityDataPool_C* albumsDataPool = m_dataBank.entityDataPool(EntityDataBank_C::EntityType::Albums);
     QSortFilterProxyModel* model = m_dataBank.entityProxyModel(EntityDataBank_C::EntityType::Albums);
@@ -63,6 +63,12 @@ void PhotoAlbumManager_C::filterAlbumsByUser(ulong userId) const
     if (!regEx.isEmpty()) {
         regEx.remove(0, 1);
         model->setFilterRegExp(regEx);
+    }
+
+    if (filterPhotos) {
+    QVariant albumIDVar =
+            model->data(model->index(0,0), static_cast<int>(EntityDataModel_C::DataRoles::IdRole));
+    filterPhotosByAlbum(albumIDVar.value<ulong>());
     }
 }
 
