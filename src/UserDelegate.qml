@@ -30,6 +30,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 24
         font.pixelSize: 18
+        color: palette.textColorAlt
     }
 
     Text {
@@ -42,6 +43,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 24
         font.pixelSize: 14
+        color: palette.textColorAlt
     }
 
     Text {
@@ -54,6 +56,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.leftMargin: 24
         font.pixelSize: 14
+        color: palette.textColorAlt
     }
 
     MouseArea {

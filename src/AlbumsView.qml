@@ -10,6 +10,4 @@ EntityView {
         }
         text: qsTr("Albums")
     }
-
-
 }

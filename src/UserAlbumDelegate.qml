@@ -34,6 +34,7 @@ Rectangle {
         anchors.leftMargin: 12
         elide: Text.ElideRight
         font.pixelSize: 14
+        color: palette.textColorAlt
     }
 
     MouseArea {

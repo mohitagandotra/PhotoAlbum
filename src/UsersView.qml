@@ -5,7 +5,7 @@ import sumup.com 1.0
 EntityView {
     id: entityView
 
-    Groove {
+    Item {
         id: photosViewBackground
         anchors.top: parent.top
         anchors.topMargin: 12
@@ -14,6 +14,7 @@ EntityView {
         anchors.left: parent.left
         anchors.leftMargin: 12
         height: 200
+        clip:true
         PathView {
             id: photosView
             anchors.fill: parent
@@ -48,7 +49,7 @@ EntityView {
         }
     }
 
-    Groove {
+    Item {
         id: usersViewBackground
         width: parent.width / 3
         anchors.left: parent.left
@@ -57,7 +58,7 @@ EntityView {
         anchors.bottomMargin: 12
         anchors.top: photosViewBackground.bottom
         anchors.topMargin: 12
-
+        clip:true
         ListView {
             id:usersView
             anchors.fill: parent
@@ -79,7 +80,7 @@ EntityView {
         }
     }
 
-    Groove {
+    Item {
         anchors.left: usersViewBackground.right
         anchors.leftMargin: 12
         anchors.bottom: parent.bottom
@@ -88,7 +89,7 @@ EntityView {
         anchors.topMargin: 12
         anchors.right: parent.right
         anchors.rightMargin: 12
-
+        clip:true
         ListView {
             id: userAlbums
             anchors.fill: parent

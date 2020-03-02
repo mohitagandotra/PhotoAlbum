@@ -3,28 +3,23 @@ import QtQuick.Controls 2.14
 import sumup.com 1.0
 
 Item {
+
     ListView {
         id: albums
-        anchors.fill:parent
-
+        anchors.verticalCenter: parent.verticalCenter
+        width:parent.width
+        height: parent.height / 2
         spacing: 10
         orientation: Qt.Horizontal
-        model: 20
-        delegate: homeScreenAlbumDelegate
-        focus: true
-    }
-
-    Component {
-        id: homeScreenAlbumDelegate
-        Column {
+        delegate: Column {
             spacing: 10
-
             Image {
                 id: thumbnailImage
-                width: 150
-                height: 150
+                width: height
+                height: 200
                 asynchronous: true
                 source:entityObject.albumThumbnail
+                smooth: true
 
                 Text {
                     text: qsTr("Loading...")
@@ -34,23 +29,28 @@ Item {
 
             }
 
-            Text {
-                id: contactInfo
-                width: 100
-                height: 100
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.leftMargin: 10
-                anchors.rightMargin: 10
-                font.bold: true
-                elide: Text.ElideRight
-                wrapMode: Text.WordWrap
-                text: entityObject.title
-
+            Rectangle {
+                width: thumbnailImage.width
+                height: 28
+                radius: height/3
+                color: palette.itemColor
+                smooth: true
+                Text {
+                    id: albumName
+                    anchors.fill: parent
+                    anchors.leftMargin: 4
+                    anchors.rightMargin: 4
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    elide: Text.ElideRight
+                    text: entityObject.title
+                    color: palette.textColorAlt
+                }
             }
-
         }
-
+        focus: true
     }
+
     Connections {
         target: DataBank
         function onDataPoolReady() {

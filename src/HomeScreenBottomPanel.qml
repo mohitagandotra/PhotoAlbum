@@ -7,7 +7,6 @@ Row {
     property string albumCount: qsTr("Albums\n") + Manager.albumsCount
     property string photosCount: qsTr("Photos\n") + Manager.photosCount
 
-    anchors.horizontalCenter: parent.horizontalCenter
     spacing:10
     Repeater {
 
@@ -21,15 +20,11 @@ Row {
             radius: 20
             font.bold: true
             text: modelData //+ qsTr("\n100")
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if(index == 0) {
-                        mainContainer.activateUsers();
-                    } else if (index == 1) {
-                        mainContainer.activateAlbums()
-                    }
+            onClicked: {
+                if(index == 0) {
+                    mainContainer.activateUsers();
+                } else if (index == 1) {
+                    mainContainer.activateAlbums()
                 }
             }
         }

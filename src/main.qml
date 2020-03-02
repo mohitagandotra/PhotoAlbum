@@ -4,17 +4,19 @@ import QtQuick.Window 2.12
 
 Window {
     visible: true
-    width: 640
-    height: 480
+    minimumWidth: 800
+    minimumHeight: 640
 
     QtObject {
         id: palette
-        property color grooveColor: "#cccccc"
-        property color backgroundColor: "#8c8c8c"
-        property color altBackgroundColor: "#f2f2f2"
-        property color itemColor: "#a6a6a6"
+        property color grooveColor: "#f2f2f2"
+        property color grooveBackgroundColor: "#8c8c8c"
+        property color backgroundColor: "#4c4c4c"
+        property color itemColor: "#666666"
         property color itemBorderColor: "#404040"
-        property color activeItemColor: "#e6f9ff"
+        property color activeItemColor: "#004d66"
+        property color textColor: "#000000"
+        property color textColorAlt: "#F0F0F0"
     }
 
     color: palette.backgroundColor

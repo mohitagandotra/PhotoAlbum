@@ -2,35 +2,33 @@ import QtQuick 2.0
 import QtQuick.Controls 2.14
 
 EntityView {
-    Rectangle {
-        anchors.fill:parent
-        color: "#A0A0A0"
-        radius:20
-        clip:true
-        Column {
-            anchors{
-                fill: parent
-                topMargin: 20
-                leftMargin: 20
-                rightMargin: 20
-            }
-            spacing:10
+    anchors.fill:parent
 
-            Label {
-                text: "Albums"
-                color: "black"
-                font.bold: true
-                font.pointSize: 20
-            }
-
-            HomeScreenAlbumView{
-                width:parent.width
-                height: 250
-            }
-
-            HomeScreenBottomPanel {
-                //anchors.left:parent.left
-            }
-        }
+    Text {
+        id: titleLabel
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.margins: 12
+        text: qsTr("Albums")
+        color: palette.textColor
+        font.pointSize: 28
     }
+
+
+    HomeScreenAlbumView {
+        width:parent.width
+        anchors.top: titleLabel.bottom
+        anchors.margins: 12
+        anchors.bottom: bottomPanel.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+    }
+
+    HomeScreenBottomPanel {
+        id: bottomPanel
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 12
+    }
+
 }
