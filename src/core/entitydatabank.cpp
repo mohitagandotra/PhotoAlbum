@@ -63,6 +63,10 @@ void EntityDataBank_C::preserveObjectOwnership(QQmlEngine *engine)
 {
     Q_ASSERT(engine);
     forEachEntity([this, engine](EntityDataBank_C::EntityType e) {
+        entityDataPool(e)->forEachEntity([engine](const Entity_C* entity) {
+            engine->setObjectOwnership(const_cast<Entity_C*>(entity), QQmlEngine::CppOwnership);
+            return true;
+        });
         engine->setObjectOwnership(entityDataModel(e), QQmlEngine::CppOwnership);
         engine->setObjectOwnership(entityProxyModel(e), QQmlEngine::CppOwnership);
     });
