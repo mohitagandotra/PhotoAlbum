@@ -15,7 +15,7 @@ EntityView {
     }
 
 
-    HomeScreenAlbumView {
+    AlbumsView {
         width:parent.width
         anchors.top: titleLabel.bottom
         anchors.margins: 12

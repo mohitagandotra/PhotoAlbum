@@ -1,12 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>AlbumsView.qml</file>
+        <file>AlbumsPage.qml</file>
         <file>EntityView.qml</file>
-        <file>HomeScreenAlbumView.qml</file>
+        <file>AlbumsView.qml</file>
         <file>HomeScreenBottomPanel.qml</file>
-        <file>HomeView.qml</file>
-        <file>UsersView.qml</file>
+        <file>HomePage.qml</file>
+        <file>UsersPage.qml</file>
         <file>ViewContainer.qml</file>
         <file>images/home.svg</file>
         <file>UserAlbumDelegate.qml</file>

@@ -16,19 +16,19 @@ Groove {
         activeView = users
     }
 
-    HomeView {
+    HomePage {
         id: home
         anchors.fill: parent
         active: activeView == home
     }
 
-    UsersView {
+    UsersPage {
         id: users
         anchors.fill: parent
         active: activeView == users
     }
 
-    AlbumsView {
+    AlbumsPage {
         id: albums
         anchors.fill: parent
         active: activeView == albums
