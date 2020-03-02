@@ -16,6 +16,10 @@ Groove {
         activeView = users
     }
 
+    function activatePhotos() {
+        activeView = photos
+    }
+
     HomePage {
         id: home
         anchors.fill: parent
@@ -32,6 +36,12 @@ Groove {
         id: albums
         anchors.fill: parent
         active: activeView == albums
+    }
+
+    PhotosPage {
+        id: photos
+        anchors.fill: parent
+        active: activeView == photos
     }
 
 

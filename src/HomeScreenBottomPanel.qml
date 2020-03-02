@@ -25,6 +25,8 @@ Row {
                     mainContainer.activateUsers();
                 } else if (index == 1) {
                     mainContainer.activateAlbums()
+                } else if (index == 2) {
+                    mainContainer.activatePhotos()
                 }
             }
         }

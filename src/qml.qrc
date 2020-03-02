@@ -13,5 +13,7 @@
         <file>PhotoDelegate.qml</file>
         <file>UserDelegate.qml</file>
         <file>Groove.qml</file>
+        <file>PhotosView.qml</file>
+        <file>PhotosPage.qml</file>
     </qresource>
 </RCC>
