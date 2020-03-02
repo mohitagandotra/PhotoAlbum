@@ -23,18 +23,17 @@ bool Album_C::isValid() const
 
 QUrl Album_C::albumThumbnail() const
 {
-    static QUrl thumbnail;
-    if (thumbnail.isEmpty()) {
+    if (m_thumbnail.isEmpty()) {
         EntityDataPool_C* photosPool = m_dataBank.entityDataPool(EntityDataBank_C::EntityType::Photos);
         photosPool->forEachEntity([this](const Entity_C *e) {
             auto p = static_cast<const Photo_C*>(e);
             if (p->albumId() == m_id) {
-                thumbnail = p->thumbnailUrl();
+                m_thumbnail = p->thumbnailUrl();
                 return false;
             }
             return true;
         });
     }
-    return thumbnail;
+    return m_thumbnail;
 }
 }
