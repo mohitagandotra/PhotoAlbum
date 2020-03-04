@@ -40,6 +40,7 @@ public:
     ~EntityDataBank_C();
 
 signals:
+    void dataPoolReset();
     void dataPoolReady();
     void dataPoolTimedout();
 

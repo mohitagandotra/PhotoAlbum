@@ -96,10 +96,12 @@ QSortFilterProxyModel *EntityDataBank_C::entityProxyModel(EntityDataBank_C::Enti
 
 void EntityDataBank_C::reset()
 {
+    emit dataPoolReset();
     m_proxyModels.clear();
     m_dataModels.clear();
     m_dataPools.clear();
     m_dataSources.clear();
+    emit dataPoolReset();
 }
 
 void EntityDataBank_C::beginFetch()
@@ -107,7 +109,7 @@ void EntityDataBank_C::beginFetch()
     qCDebug(logInfo) << "Fetching data";
     vector<DataSource_I*> sources;
     transform(m_dataSources.begin(), m_dataSources.end(), back_inserter(sources), [](auto &s) { return s.get();});
-    m_fetcher->fetch(sources, 5000);
+    m_fetcher->fetch(sources, 8000);
 }
 
 void EntityDataBank_C::onFetchStateChanged(AbstractDatafetcher::FetchState state)

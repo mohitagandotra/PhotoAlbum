@@ -56,5 +56,9 @@ Item {
         function onDataPoolReady() {
             albums.model = DataBank.entityDataModel(EntityDataBank.Albums);
         }
+
+        function onDataPoolReset() {
+            albums.model = 0;
+        }
     }
 }

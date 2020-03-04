@@ -12,9 +12,9 @@ class PhotoAlbumManager_C : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(int usersCount READ usersCount NOTIFY dataReady)
-    Q_PROPERTY(int albumsCount READ albumsCount NOTIFY dataReady)
-    Q_PROPERTY(int photosCount READ photosCount NOTIFY dataReady)
+    Q_PROPERTY(int usersCount READ usersCount NOTIFY dataChanged)
+    Q_PROPERTY(int albumsCount READ albumsCount NOTIFY dataChanged)
+    Q_PROPERTY(int photosCount READ photosCount NOTIFY dataChanged)
 
 public:
     PhotoAlbumManager_C(QObject* parent = nullptr);
@@ -30,7 +30,7 @@ public:
     EntityDataBank_C* entityDataBank() { return &m_dataBank; }
 
 signals:
-    void dataReady();
+    void dataChanged();
 
 private:
     int entityCount(EntityDataBank_C::EntityType type) const;

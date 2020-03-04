@@ -14,5 +14,9 @@ EntityView {
         function onDataPoolReady() {
             photosView.model = DataBank.entityDataModel(EntityDataBank.Photos);
         }
+
+        function onDataPoolReset() {
+            photosView.model = 0;
+        }
     }
 }

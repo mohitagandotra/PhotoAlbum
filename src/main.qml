@@ -83,6 +83,10 @@ Window {
         function onDataPoolTimedout() {
             timeoutMessage.visible = true
         }
+
+        function onDataPoolReset() {
+            loading.visible = true
+        }
     }
 
     function refresh() {

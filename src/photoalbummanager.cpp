@@ -17,7 +17,8 @@ PhotoAlbumManager_C::PhotoAlbumManager_C(QObject *parent) :
     m_fetcher(new NetworkFetcher),
     m_dataBank(m_fetcher.get())
 {
-    connect(&m_dataBank, &EntityDataBank_C::dataPoolReady, this, &PhotoAlbumManager_C::dataReady);
+    connect(&m_dataBank, &EntityDataBank_C::dataPoolReady, this, &PhotoAlbumManager_C::dataChanged);
+    connect(&m_dataBank, &EntityDataBank_C::dataPoolReset, this, &PhotoAlbumManager_C::dataChanged);
 }
 
 PhotoAlbumManager_C::~PhotoAlbumManager_C()
@@ -102,6 +103,6 @@ int PhotoAlbumManager_C::entityCount(EntityDataBank_C::EntityType type) const
     EntityDataPool_C* entityPool = m_dataBank.entityDataPool(type);
     if (entityPool)
         return entityPool->count();
-    return -1;
+    return 0;
 }
 }

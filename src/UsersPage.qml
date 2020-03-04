@@ -89,5 +89,11 @@ EntityView {
             photosView.model = DataBank.entityProxyModel(EntityDataBank.Photos);
             userAlbums.model = DataBank.entityProxyModel(EntityDataBank.Albums);
         }
+
+        function onDataPoolReset() {
+            usersView.model = 0
+            photosView.model = 0
+            userAlbums.model = 0
+        }
     }
 }
