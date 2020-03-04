@@ -18,7 +18,8 @@ using namespace SUData;
 
 
 namespace  {
-Q_LOGGING_CATEGORY(logError, "SUCore.EntityDataBank")
+Q_LOGGING_CATEGORY(logError, "SUCore.EntityDataBank", QtCriticalMsg)
+Q_LOGGING_CATEGORY(logInfo, "SUCore.EntityDataBank", QtInfoMsg)
 }
 
 namespace SUCore {
@@ -43,7 +44,7 @@ EntityDataBank_C::~EntityDataBank_C()
 void EntityDataBank_C::populate()
 {
     Q_ASSERT(m_fetcher);
-
+    qCDebug(logInfo) << "Populating data begin";
     // Add data pools
     forEachEntity([this](EntityType e) {
         m_dataPools.insert({e, make_unique<EntityDataPool_C>()});
@@ -98,6 +99,7 @@ QSortFilterProxyModel *EntityDataBank_C::entityProxyModel(EntityDataBank_C::Enti
 
 void EntityDataBank_C::beginFetch()
 {
+    qCDebug(logInfo) << "Fetching data";
     vector<DataSource_I*> sources;
     transform(m_dataSources.begin(), m_dataSources.end(), back_inserter(sources), [](auto &s) { return s.get();});
     m_fetcher->fetch(sources);
@@ -106,6 +108,8 @@ void EntityDataBank_C::beginFetch()
 void EntityDataBank_C::onFetchStateChanged(AbstractDatafetcher::FetchState state)
 {
     if (state == AbstractDatafetcher::FetchState::Finished) {
+        qCDebug(logInfo) << "Fetching data finished";
+
         // Data population done. Remove sources.
         m_dataSources.clear();
 

@@ -9,6 +9,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QSortFilterProxyModel>
+#include <QLoggingCategory>
 
 using namespace std;
 using namespace SUCore;
@@ -17,7 +18,7 @@ using namespace SUData;
 int main(int argc, char **argv)
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-
+    QLoggingCategory::setFilterRules("SUCore.*=true\nSUData.*=true");
     qmlRegisterUncreatableType<EntityDataBank_C>("sumup.com", 1, 0, "EntityDataBank", "Not creatable as it is an enum type");
     qRegisterMetaType<DataSource_I*>("DataSource_I*");
     qRegisterMetaType<Entity_C*>("Entity_C*");
