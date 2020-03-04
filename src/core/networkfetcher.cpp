@@ -7,7 +7,6 @@
 
 
 namespace  {
-Q_LOGGING_CATEGORY(logError, "SUCore.NetworkFetcher", QtCriticalMsg)
 Q_LOGGING_CATEGORY(logInfo, "SUCore.NetworkFetcher", QtInfoMsg)
 }
 
@@ -26,33 +25,21 @@ NetworkFetcher::~NetworkFetcher()
 void NetworkFetcher::doFetch(const std::vector<DataSource_I *> &sources)
 {
     if (!sources.size())
-        setState(AbstractDatafetcher::FetchState::Finished);
+        onFetchingDone();
 
-    for (auto client : sources) {
-        if (!m_activeSources.count(client)) {
-            m_activeSources.insert(client);
-            m_pimpl->fetch(client);
-        }
-    }
+    m_pimpl->fetch(sources);
 }
 
 void NetworkFetcher::cancel()
 {
+    qCDebug(logInfo) << "Cancelling fetching";
     m_pimpl->cancel();
-    m_activeSources.clear();
 }
 
-void NetworkFetcher::onFetchingDone(DataSource_I *src)
+void NetworkFetcher::onFetchingDone()
 {
-    if (src) {
-        qCDebug(logInfo) << "Fetching done for: " << src->source() << "Pending count: " << m_activeSources.size();
-        m_activeSources.erase(src);
-        if (!m_activeSources.size()) {
-            setState(AbstractDatafetcher::FetchState::Finished);
-        }
-    } else {
-        qCDebug(logError) << "Fetching done for invalid source";
-    }
+    qCDebug(logInfo) << "Fetching done";
+    setState(AbstractDatafetcher::FetchState::Finished);
 }
 
 }

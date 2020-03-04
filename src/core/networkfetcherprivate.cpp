@@ -12,7 +12,7 @@ namespace  {
 Q_LOGGING_CATEGORY(logError, "SUCore.NetworkFetcherPrivate", QtCriticalMsg);
 }
 
-
+using namespace std;
 
 namespace SUCore {
 NetworkFetcherPrivate::NetworkFetcherPrivate(NetworkFetcher *fetcher, QObject *parent): QObject(parent),
@@ -33,25 +33,22 @@ NetworkFetcherPrivate::~NetworkFetcherPrivate()
     }
 }
 
-void NetworkFetcherPrivate::fetch(DataSource_I *src)
+void NetworkFetcherPrivate::fetch(const vector<DataSource_I*>& sources)
 {
-    QMetaObject::invokeMethod(this, "addClient", Q_ARG(DataSource_I*, src));
+    for (auto src : sources)
+        QMetaObject::invokeMethod(this, "addClient", Q_ARG(DataSource_I*, src));
 }
 
 void NetworkFetcherPrivate::cancel()
 {
-    QMetaObject::invokeMethod(this, "clearClients");
+    clearClients();
 }
 
 void NetworkFetcherPrivate::init()
 {
     // Create the network manager on network thread.
     m_networkManager = std::make_unique<QNetworkAccessManager>(nullptr);
-    // Use the m_networkThread (Object created in main thread) so that the lamda is called on the main thread. See Thread affinity.
-    connect(this, &NetworkFetcherPrivate::downloadDone, m_networkThread.get(),
-            [this] (DataSource_I *src) {
-        m_fetcher->onFetchingDone(src);
-    });
+    connect(this, &NetworkFetcherPrivate::downloadDone, m_fetcher, &NetworkFetcher::onFetchingDone);
 }
 
 void NetworkFetcherPrivate::addClient(DataSource_I *src)
@@ -78,9 +75,11 @@ void NetworkFetcherPrivate::addClient(DataSource_I *src)
 
 void NetworkFetcherPrivate::clearClients()
 {
+    QWriteLocker lock(&m_dataLock);
     while(m_requests.size()) {
         QNetworkReply *reply = m_requests.begin().key();
         m_requests.remove(reply);
+        reply->abort();
     }
     m_requests.clear();
 }
@@ -88,25 +87,42 @@ void NetworkFetcherPrivate::clearClients()
 void NetworkFetcherPrivate::onFetchFinished()
 {
     auto reply = static_cast<QNetworkReply*>(sender());
-    if (!m_requests[reply]) {
+    DataSource_I *src = client(reply);
+    if (!src) {
         qCDebug(logError) << "Error. No client for network reply";
         return;
     }
-    DataSource_I *src = m_requests[reply];
     src->parse(reply->readAll());
-    m_requests.remove(reply);
-    reply->deleteLater();
-    emit downloadDone(src);
+    removeReply(reply);
 }
 
 void NetworkFetcherPrivate::onFetcError()
 {
     auto reply = static_cast<QNetworkReply*>(sender());
     qCDebug(logError) << "Fetch error: " << reply->errorString();
-    DataSource_I *src = m_requests[reply];
+    DataSource_I *src = client(reply);
+    if (!src) {
+        qCDebug(logError) << "Error. No client for network reply";
+        return;
+    }
+    removeReply(reply);
+}
+
+DataSource_I *NetworkFetcherPrivate::client(QNetworkReply *reply) const
+{
+    QReadLocker lock(&m_dataLock);
+    if (m_requests.count(reply))
+        return m_requests[reply];
+    return nullptr;
+}
+
+void NetworkFetcherPrivate::removeReply(QNetworkReply *reply)
+{
+    QWriteLocker lock(&m_dataLock);
     m_requests.remove(reply);
     reply->deleteLater();
-    emit downloadDone(src);
+    if (m_requests.size() == 0)
+        emit downloadDone();
 }
 
 }

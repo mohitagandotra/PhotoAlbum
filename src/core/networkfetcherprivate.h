@@ -2,8 +2,11 @@
 
 #include <QObject>
 #include <QHash>
+#include <QReadWriteLock>
 
 #include <memory>
+#include <vector>
+
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -19,11 +22,11 @@ public:
     NetworkFetcherPrivate(NetworkFetcher* fetcher, QObject *parent = nullptr);
     ~NetworkFetcherPrivate();
 
-    void fetch(DataSource_I *src);
+    void fetch(const std::vector<DataSource_I*>& sources);
     void cancel();
 
 signals:
-    void downloadDone(DataSource_I *);
+    void downloadDone();
 
 private:
     Q_INVOKABLE void init();
@@ -32,10 +35,14 @@ private:
     void onFetchFinished();
     void onFetcError();
 
+    DataSource_I* client(QNetworkReply* reply) const;
+    void removeReply(QNetworkReply* reply);
+
 private:
     NetworkFetcher *m_fetcher;
     std::unique_ptr<QThread> m_networkThread;
     std::unique_ptr<QNetworkAccessManager> m_networkManager;
+    mutable QReadWriteLock m_dataLock;
     QHash<QNetworkReply*, DataSource_I*> m_requests;
 };
 }
