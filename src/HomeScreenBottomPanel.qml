@@ -10,9 +10,7 @@ Row {
     spacing:10
     Repeater {
 
-
-        //model: [ qsTr("Users\n") +userCount, qsTr("Albums"), qsTr("Photos"), qsTr("Comments"), qsTr("Posts") ]
-        model: [ userCount, albumCount, photosCount, qsTr("Comments"), qsTr("Posts") ]
+        model: [ userCount, albumCount, photosCount, qsTr("Comments\n500"), qsTr("Posts\n100") ]
         RoundButton {
 
             width: 100

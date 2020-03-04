@@ -30,7 +30,7 @@ EntityView {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 12
         anchors.top: photosViewBackground.bottom
-        anchors.topMargin: 12
+        anchors.topMargin: 22
         clip:true
         ListView {
             id:usersView
@@ -59,7 +59,7 @@ EntityView {
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 12
         anchors.top: photosViewBackground.bottom
-        anchors.topMargin: 12
+        anchors.topMargin: 22
         anchors.right: parent.right
         anchors.rightMargin: 12
         clip:true
