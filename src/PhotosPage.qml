@@ -2,6 +2,7 @@ import QtQuick 2.0
 import sumup.com 1.0
 
 EntityView {
+    title: qsTr("All Photos")
     PhotosView {
         id: photosView
         anchors.fill: parent

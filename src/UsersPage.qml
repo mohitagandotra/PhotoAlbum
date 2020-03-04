@@ -4,11 +4,11 @@ import sumup.com 1.0
 
 EntityView {
     id: entityView
-
+    title: qsTr("User Albums")
     Item {
         id: photosViewBackground
         anchors.top: parent.top
-        anchors.topMargin: 12
+        anchors.topMargin: 28
         anchors.right: parent.right
         anchors.rightMargin: 12
         anchors.left: parent.left

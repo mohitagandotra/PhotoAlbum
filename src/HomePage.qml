@@ -3,21 +3,11 @@ import QtQuick.Controls 2.14
 
 EntityView {
     anchors.fill:parent
-
-    Text {
-        id: titleLabel
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.margins: 12
-        text: qsTr("Albums")
-        color: palette.textColor
-        font.pointSize: 28
-    }
-
+    title: qsTr("Home")
 
     AlbumsView {
         width:parent.width
-        anchors.top: titleLabel.bottom
+        anchors.top: parent.top
         anchors.margins: 12
         anchors.bottom: bottomPanel.top
         anchors.left: parent.left
