@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
+import QtQuick.Dialogs 1.3
 
 
 Window {
@@ -21,13 +22,8 @@ Window {
 
     color: palette.backgroundColor
 
-    Image {
+    ImageButton {
         id: homeButton
-        scale: homeMouse.pressed ? 0.9 : (homeMouse.containsMouse ? 1.2 : 1.0)
-        Behavior on scale {
-            NumberAnimation { duration: 100 }
-        }
-
         anchors {
             right: parent.right
             rightMargin: 30
@@ -35,20 +31,35 @@ Window {
             topMargin: 8
         }
         source: "qrc:/images/home.svg"
-        width: 24
-        height: 24
-        MouseArea {
-            id: homeMouse
-            hoverEnabled: true
-            anchors.fill: parent
-            onClicked: mainContainer.activateHome();
-        }
+        onActivated: mainContainer.activateHome();
     }
+
+    ImageButton {
+        id: cancelButton
+        anchors {
+            right: homeButton.left
+            rightMargin: 8
+            top: parent.top
+            topMargin: 8
+        }
+        source: "qrc:/images/cancel.svg"
+        onActivated: quitDialog.visible = true
+    }
+
+
+    MessageDialog {
+        id: quitDialog
+        title: "Quit?"
+        icon: StandardIcon.NoIcon
+        text: qsTr("Quit Application?")
+        standardButtons: StandardButton.Yes  | StandardButton.No
+        onYes: Qt.quit()
+    }
+
 
     ViewContainer {
         id: mainContainer
         anchors {
-            //fill:parent
             left: parent.left
             right: parent.right
             bottom: parent.bottom

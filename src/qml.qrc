@@ -15,5 +15,7 @@
         <file>Groove.qml</file>
         <file>PhotosView.qml</file>
         <file>PhotosPage.qml</file>
+        <file>images/cancel.svg</file>
+        <file>ImageButton.qml</file>
     </qresource>
 </RCC>
