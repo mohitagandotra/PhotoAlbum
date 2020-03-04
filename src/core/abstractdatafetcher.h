@@ -3,6 +3,7 @@
 #include <QObject>
 
 #include <vector>
+#include <QTimer>
 
 namespace SUCore {
 class DataSource_I;
@@ -19,7 +20,8 @@ public:
     {
         Idle = 0,
         Fetching,
-        Finished
+        Finished,
+        TimedOut
     };
 
 signals:
@@ -28,7 +30,7 @@ signals:
 
 public:
     bool isBusy() const;
-    void fetch(const std::vector<DataSource_I *>& sources);
+    void fetch(const std::vector<DataSource_I *>& sources, int timeoutMsecs = 0);
     virtual void cancel() = 0;
 
 protected:
@@ -36,7 +38,12 @@ protected:
     void setState(FetchState newState);
 
 private:
+    void setTimeOut(int timeoutMsecs);
+    void onTimeout();
+
+private:
     FetchState m_state = FetchState::Idle;
+    std::unique_ptr<QTimer> m_timeoutTimer;
 };
 
 }

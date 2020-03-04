@@ -39,6 +39,7 @@ void NetworkFetcher::doFetch(const std::vector<DataSource_I *> &sources)
 void NetworkFetcher::cancel()
 {
     m_pimpl->cancel();
+    m_activeSources.clear();
 }
 
 void NetworkFetcher::onFetchingDone(DataSource_I *src)

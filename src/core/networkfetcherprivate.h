@@ -28,6 +28,7 @@ signals:
 private:
     Q_INVOKABLE void init();
     Q_INVOKABLE void addClient(DataSource_I *src);
+    Q_INVOKABLE void clearClients();
     void onFetchFinished();
     void onFetcError();
 

@@ -40,9 +40,7 @@ void NetworkFetcherPrivate::fetch(DataSource_I *src)
 
 void NetworkFetcherPrivate::cancel()
 {
-    for (auto itr = m_requests.begin(); itr != m_requests.end(); ++itr)
-        itr.key()->abort();
-    m_requests.clear();
+    QMetaObject::invokeMethod(this, "clearClients");
 }
 
 void NetworkFetcherPrivate::init()
@@ -78,6 +76,15 @@ void NetworkFetcherPrivate::addClient(DataSource_I *src)
     });
 }
 
+void NetworkFetcherPrivate::clearClients()
+{
+    while(m_requests.size()) {
+        QNetworkReply *reply = m_requests.begin().key();
+        m_requests.remove(reply);
+    }
+    m_requests.clear();
+}
+
 void NetworkFetcherPrivate::onFetchFinished()
 {
     auto reply = static_cast<QNetworkReply*>(sender());
@@ -87,17 +94,19 @@ void NetworkFetcherPrivate::onFetchFinished()
     }
     DataSource_I *src = m_requests[reply];
     src->parse(reply->readAll());
-    emit downloadDone(m_requests[reply]);
     m_requests.remove(reply);
     reply->deleteLater();
+    emit downloadDone(src);
 }
 
 void NetworkFetcherPrivate::onFetcError()
 {
     auto reply = static_cast<QNetworkReply*>(sender());
-    m_requests.remove(reply);
     qCDebug(logError) << "Fetch error: " << reply->errorString();
+    DataSource_I *src = m_requests[reply];
+    m_requests.remove(reply);
     reply->deleteLater();
+    emit downloadDone(src);
 }
 
 }

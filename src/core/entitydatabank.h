@@ -41,9 +41,10 @@ public:
 
 signals:
     void dataPoolReady();
+    void dataPoolTimedout();
 
 public:
-    void populate();
+    Q_INVOKABLE void populate();
 
     void preserveObjectOwnership(QQmlEngine* engine);
 
@@ -52,6 +53,7 @@ public:
     Q_INVOKABLE QSortFilterProxyModel* entityProxyModel(EntityType type) const;
 
 private:
+    void reset();
     void beginFetch();
     void onFetchStateChanged(AbstractDatafetcher::FetchState state);
     void forEachEntity(std::function<void(EntityType)> callback);

@@ -56,6 +56,14 @@ Window {
         onYes: Qt.quit()
     }
 
+    MessageDialog {
+        id: timeoutMessage
+        title: "Timeout"
+        icon: StandardIcon.NoIcon
+        text: qsTr("Data fetching timed out. Retry?")
+        standardButtons: StandardButton.Yes  | StandardButton.No
+        onYes: DataBank.populate()
+    }
 
     ViewContainer {
         id: mainContainer
@@ -68,6 +76,27 @@ Window {
             bottomMargin: 20
             leftMargin: 20
             rightMargin: 20
+        }
+    }
+
+    Text {
+        id: loading
+        anchors.centerIn: parent
+        text: qsTr("Loading...")
+        color: palette.textColor
+        font {
+            pixelSize: 28
+        }
+    }
+
+    Connections {
+        target: DataBank
+        function onDataPoolReady() {
+            loading.visible = false
+        }
+
+        function onDataPoolTimedout() {
+            timeoutMessage.visible = true
         }
     }
 

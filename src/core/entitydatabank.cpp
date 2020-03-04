@@ -44,6 +44,7 @@ EntityDataBank_C::~EntityDataBank_C()
 void EntityDataBank_C::populate()
 {
     Q_ASSERT(m_fetcher);
+    reset();
     qCDebug(logInfo) << "Populating data begin";
     // Add data pools
     forEachEntity([this](EntityType e) {
@@ -97,12 +98,20 @@ QSortFilterProxyModel *EntityDataBank_C::entityProxyModel(EntityDataBank_C::Enti
     return nullptr;
 }
 
+void EntityDataBank_C::reset()
+{
+    m_proxyModels.clear();
+    m_dataModels.clear();
+    m_dataPools.clear();
+    m_dataSources.clear();
+}
+
 void EntityDataBank_C::beginFetch()
 {
     qCDebug(logInfo) << "Fetching data";
     vector<DataSource_I*> sources;
     transform(m_dataSources.begin(), m_dataSources.end(), back_inserter(sources), [](auto &s) { return s.get();});
-    m_fetcher->fetch(sources);
+    m_fetcher->fetch(sources, 5000);
 }
 
 void EntityDataBank_C::onFetchStateChanged(AbstractDatafetcher::FetchState state)
@@ -124,6 +133,9 @@ void EntityDataBank_C::onFetchStateChanged(AbstractDatafetcher::FetchState state
 
         // Notify data ready.
         emit dataPoolReady();
+    } else if (state == AbstractDatafetcher::FetchState::TimedOut) {
+        qCDebug(logError) << "Data fetching timed out";
+        emit dataPoolTimedout();
     }
 }
 
