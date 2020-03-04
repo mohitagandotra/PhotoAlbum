@@ -27,6 +27,8 @@ SOURCES += \
         ../src/data/photo.cpp \
         ../src/data/user.cpp \
         main.cpp \
+        test_datamodel.cpp \
+        test_datapool.cpp \
         test_entities.cpp
 
 HEADERS += \
