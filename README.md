@@ -1,5 +1,13 @@
 # PhotoAlbum
-PhotoAlbum App pulling data using RestAPI
+PhotoAlbum App that pulls data using RestAPI from https://jsonplaceholder.typicode.com/. 
+
+## Features
+* The App has four pages Home Page, User Page, Album Page and Photo Page.
+* The application uses model/view design principles to expose the data to views. 
+* The application fetches the data in a worker thread. The UI is populated once data is availble. 
+* User can refresh the data from the datasource. 
+* The application can be extended to add multiple data sources.
+
 
 ## Screenshots
 <img src="images/home_page.png" alt="Home page" width="300" height="300"> <img src="images/users_page.png" alt="Users page" width="300" height="300">
@@ -33,4 +41,8 @@ Once the make tool finishes, run the binary "unit_tests"
 
 # Class Diagram
 ![Class diagram](images/class_diagram.png)
+
+# ToDos
+## Tasks
+* Implement Posts and Comments.
 
