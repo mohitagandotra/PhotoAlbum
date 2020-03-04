@@ -65,18 +65,9 @@ void EntityDataBank_C::populate()
     beginFetch();
 }
 
-// // Prevent JS garbage collector to delete model objects. Explicitly define the object ownership.
-void EntityDataBank_C::preserveObjectOwnership(QQmlEngine *engine)
+void EntityDataBank_C::setQmlEngine(QQmlEngine *engine)
 {
-    Q_ASSERT(engine);
-    forEachEntity([this, engine](EntityDataBank_C::EntityType e) {
-        entityDataPool(e)->forEachEntity([engine](const Entity_C* entity) {
-            engine->setObjectOwnership(const_cast<Entity_C*>(entity), QQmlEngine::CppOwnership);
-            return true;
-        });
-        engine->setObjectOwnership(entityDataModel(e), QQmlEngine::CppOwnership);
-        engine->setObjectOwnership(entityProxyModel(e), QQmlEngine::CppOwnership);
-    });
+    m_qmlEngine = engine;
 }
 
 EntityDataPool_C *EntityDataBank_C::entityDataPool(EntityDataBank_C::EntityType type) const
@@ -127,13 +118,25 @@ void EntityDataBank_C::onFetchStateChanged(AbstractDatafetcher::FetchState state
         // Data population done. Remove sources.
         m_dataSources.clear();
 
+        Q_ASSERT(m_qmlEngine);
+
         // Create Models
         forEachEntity([this](EntityType e) {
+            // Prevent JS garbage collector to delete model objects. Explicitly define the object ownership.
+            entityDataPool(e)->forEachEntity([this](const Entity_C* entity) {
+                m_qmlEngine->setObjectOwnership(const_cast<Entity_C*>(entity), QQmlEngine::CppOwnership);
+                return true;
+            });
+
             m_dataModels.insert({e, make_unique<EntityDataModel_C>(*(entityDataPool(e)))});
+            auto sourceModel = entityDataModel(e);
+            m_qmlEngine->setObjectOwnership(sourceModel, QQmlEngine::CppOwnership);
+
             m_proxyModels.insert({e, make_unique<QSortFilterProxyModel>(nullptr)});
             auto proxyModel = entityProxyModel(e);
             proxyModel->setFilterRole(static_cast<int>(EntityDataModel_C::DataRoles::IdRole));
-            proxyModel->setSourceModel(entityDataModel(e));
+            proxyModel->setSourceModel(sourceModel);
+            m_qmlEngine->setObjectOwnership(proxyModel, QQmlEngine::CppOwnership);
         });
 
         // Notify data ready.

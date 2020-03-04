@@ -27,19 +27,13 @@ int main(int argc, char **argv)
 
     QGuiApplication app(argc, argv);
     PhotoAlbumManager_C manager;
-
     QQmlApplicationEngine engine;
-
-    // Prevent JS garbage collector to delete model objects.
-    QObject::connect(&manager, &PhotoAlbumManager_C::dataReady, &manager, [&engine, &manager]() {
-       manager.entityDataBank()->preserveObjectOwnership(&engine);
-    });
+    manager.entityDataBank()->setQmlEngine(&engine);
 
     QQmlContext* rootContext = engine.rootContext();
-
     rootContext->setContextProperty("Manager", &manager);
     rootContext->setContextProperty("DataBank", manager.entityDataBank());
-
+    manager.entityDataBank()->populate();
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {

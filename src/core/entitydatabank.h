@@ -45,8 +45,7 @@ signals:
 
 public:
     Q_INVOKABLE void populate();
-
-    void preserveObjectOwnership(QQmlEngine* engine);
+    void setQmlEngine(QQmlEngine *engine);
 
     SUData::EntityDataPool_C* entityDataPool(EntityType type) const;
     Q_INVOKABLE SUData::EntityDataModel_C* entityDataModel(EntityType type) const;
@@ -61,6 +60,7 @@ private:
 private:
     static std::vector<EntityType> m_entityTypes;
     AbstractDatafetcher* m_fetcher = nullptr;
+    QQmlEngine* m_qmlEngine = nullptr;
     std::vector<SafeSourcePtr> m_dataSources;
     std::unordered_map<EntityType, SafePoolPtr> m_dataPools;
     std::unordered_map<EntityType, SafeModelPtr> m_dataModels;

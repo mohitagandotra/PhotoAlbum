@@ -18,7 +18,6 @@ PhotoAlbumManager_C::PhotoAlbumManager_C(QObject *parent) :
     m_dataBank(m_fetcher.get())
 {
     connect(&m_dataBank, &EntityDataBank_C::dataPoolReady, this, &PhotoAlbumManager_C::dataReady);
-    m_dataBank.populate();
 }
 
 PhotoAlbumManager_C::~PhotoAlbumManager_C()
