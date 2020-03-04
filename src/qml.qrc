@@ -1,21 +1,23 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
         <file>AlbumsPage.qml</file>
-        <file>EntityView.qml</file>
         <file>AlbumsView.qml</file>
-        <file>HomeScreenBottomPanel.qml</file>
+        <file>EntityView.qml</file>
+        <file>Groove.qml</file>
         <file>HomePage.qml</file>
+        <file>HomeScreenBottomPanel.qml</file>
+        <file>ImageButton.qml</file>
+        <file>PhotoDelegate.qml</file>
+        <file>PhotosPage.qml</file>
+        <file>PhotosView.qml</file>
+        <file>UserAlbumDelegate.qml</file>
+        <file>UserDelegate.qml</file>
         <file>UsersPage.qml</file>
         <file>ViewContainer.qml</file>
-        <file>images/home.svg</file>
-        <file>UserAlbumDelegate.qml</file>
-        <file>PhotoDelegate.qml</file>
-        <file>UserDelegate.qml</file>
-        <file>Groove.qml</file>
-        <file>PhotosView.qml</file>
-        <file>PhotosPage.qml</file>
         <file>images/cancel.svg</file>
-        <file>ImageButton.qml</file>
+        <file>images/home.svg</file>
+        <file>images/refresh.svg</file>
+        <file>main.qml</file>
+        <file>TopButtonPanel.qml</file>
     </qresource>
 </RCC>

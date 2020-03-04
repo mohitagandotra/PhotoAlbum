@@ -22,30 +22,15 @@ Window {
 
     color: palette.backgroundColor
 
-    ImageButton {
-        id: homeButton
+    TopButtonPanel {
+        id:topButtonPanel
         anchors {
             right: parent.right
             rightMargin: 30
             top: parent.top
             topMargin: 8
         }
-        source: "qrc:/images/home.svg"
-        onActivated: mainContainer.activateHome();
     }
-
-    ImageButton {
-        id: cancelButton
-        anchors {
-            right: homeButton.left
-            rightMargin: 8
-            top: parent.top
-            topMargin: 8
-        }
-        source: "qrc:/images/cancel.svg"
-        onActivated: quitDialog.visible = true
-    }
-
 
     MessageDialog {
         id: quitDialog
@@ -71,7 +56,7 @@ Window {
             left: parent.left
             right: parent.right
             bottom: parent.bottom
-            top: homeButton.bottom
+            top: topButtonPanel.bottom
             topMargin: 8
             bottomMargin: 20
             leftMargin: 20
@@ -98,6 +83,14 @@ Window {
         function onDataPoolTimedout() {
             timeoutMessage.visible = true
         }
+    }
+
+    function refresh() {
+        DataBank.populate()
+    }
+
+    function showQuitMessage() {
+        quitDialog.visible = true
     }
 
 }

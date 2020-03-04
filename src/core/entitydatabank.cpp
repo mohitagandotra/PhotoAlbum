@@ -44,6 +44,11 @@ EntityDataBank_C::~EntityDataBank_C()
 void EntityDataBank_C::populate()
 {
     Q_ASSERT(m_fetcher);
+    if (m_fetcher->isBusy()) {
+        qCDebug(logInfo) << "Can not populate data. Fetcher busy.";
+        return;
+    }
+
     reset();
     qCDebug(logInfo) << "Populating data begin";
     // Add data pools
